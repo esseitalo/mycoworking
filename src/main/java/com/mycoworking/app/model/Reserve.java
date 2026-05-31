@@ -34,13 +34,17 @@ public class Reserve {
   @JoinColumn(name = "room", nullable = false)
   @OneToOne(fetch = FetchType.LAZY)
   private Room room;
-  
+
   @NotNull
   @Column(name = "start_time", nullable = false)
+  @Schema(example = "31/05/2026 14:30")
+
   private OffsetDateTime startTime;
-  
+
   @NotNull
   @Column(name = "end_time", nullable = false)
+  @Schema(example = "31/05/2026 16:30")
+
   private OffsetDateTime endTime;
 
   @Schema(accessMode = Schema.AccessMode.READ_ONLY)
@@ -48,7 +52,6 @@ public class Reserve {
   @Enumerated
   @Column(name = "status", nullable = true)
   private ReserveStatus status;
-
 
   public UUID getId() {
     return id;

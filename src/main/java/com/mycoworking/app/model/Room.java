@@ -11,8 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "rooms")
@@ -20,8 +18,6 @@ public class Room {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private UUID id;
 
   @NotNull
@@ -45,7 +41,7 @@ public class Room {
   public void setId(UUID id) {
     this.id = id;
   }
-  
+
   public String getName() {
     return name;
   }
