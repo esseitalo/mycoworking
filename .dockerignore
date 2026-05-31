@@ -1,0 +1,8 @@
+.vscode
+.git
+.gitignore
+.gitattributes
+.env
+README.md
+target
+TODO.txt
