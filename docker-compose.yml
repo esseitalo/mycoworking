@@ -1,7 +1,7 @@
 services:
   api:
-    image: maven:3.9.9-eclipse-temurin-17
     container_name: mycoworking-api
+    image: maven:3.9.9-eclipse-temurin-17
     env_file:
       - .env
     environment:
@@ -14,31 +14,19 @@ services:
     working_dir: /app
     command: mvn spring-boot:run
     depends_on:
-      - mariadb
-    mem_limit: 1g
-    cpus: 0.5
-    restart: on-failure
+      - db
 
-  mariadb:
-    image: mariadb
-    container_name: mycoworking-mariadb
+  db:
+    container_name: mycoworking-db
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=mycoworking
-      - MYSQL_USER=myuser
-      - MYSQL_PASSWORD=mypassword
+      - POSTGRES_DB=mycoworking
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql
     ports:
-      - "3306:3306"
-    mem_limit: 256m
-    cpus: 0.5
-    restart: on-failure
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "5432:5432"
 
 volumes:
   db_data:
