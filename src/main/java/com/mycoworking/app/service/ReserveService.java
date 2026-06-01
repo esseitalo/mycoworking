@@ -50,16 +50,29 @@ public class ReserveService {
 
     reserve.setRoom(room);
     reserve.setStatus(ReserveStatus.RESERVED);
+    reserve.setStartTime(normalizeOffset(reserve.getStartTime()));
+    reserve.setEndTime(normalizeOffset(reserve.getEndTime()));
 
     return reserveRepository.save(reserve);
   }
 
   public Iterable<Reserve> getAllReserves() {
-    return reserveRepository.findAll();
+    List<Reserve> reserves = new ArrayList<>();
+    for (Reserve reserve : reserveRepository.findAll()) {
+      OffsetDateTime start = normalizeOffset(reserve.getStartTime());
+      OffsetDateTime end = normalizeOffset(reserve.getEndTime());
+      reserve.setStartTime(start);
+      reserve.setEndTime(end);
+      reserves.add(reserve);
+    }
+    return reserves;
   }
 
   public Reserve getReserveById(UUID id) {
-    return reserveRepository.findById(id).orElseThrow(() -> new ReserveNotFoundException(id));
+    Reserve reserve = reserveRepository.findById(id).orElseThrow(() -> new ReserveNotFoundException(id));
+    reserve.setStartTime(normalizeOffset(reserve.getStartTime()));
+    reserve.setEndTime(normalizeOffset(reserve.getEndTime()));
+    return reserve;
   }
 
   public void deleteReserve(UUID id) {
@@ -67,6 +80,8 @@ public class ReserveService {
   }
 
   public Reserve updateReserve(Reserve reserve) {
+    reserve.setStartTime(normalizeOffset(reserve.getStartTime()));
+    reserve.setEndTime(normalizeOffset(reserve.getEndTime()));
     return reserveRepository.save(reserve);
   }
 
