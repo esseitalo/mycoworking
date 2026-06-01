@@ -19,6 +19,7 @@ import com.mycoworking.app.service.RoomService;
 import com.mycoworking.app.helpers.ErrorResponse;
 
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,7 +85,21 @@ public class RoomController {
         content = @Content(schema = @Schema(implementation = ErrorResponse.class))
       )
   })
-  public ResponseEntity<Room> create(@Valid @RequestBody Room room) {
+  public ResponseEntity<Room> create(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        content = @Content(
+          mediaType = "application/json",
+          examples = @ExampleObject(
+            name = "CriarSala",
+            value = "{\n" +
+              "  \"name\": \"Sala Ocean\",\n" +
+              "  \"kind\": \"MEETING\",\n" +
+              "  \"description\": \"Sala com projetor e quadro branco\"\n" +
+              "}"
+          )
+        )
+      )
+      @Valid @RequestBody Room room) {
     return ResponseEntity.created(null).body(roomService.createRoom(room));
   }
 
@@ -103,7 +118,22 @@ public class RoomController {
         content = @Content(schema = @Schema(implementation = ErrorResponse.class))
       )
   })
-  public ResponseEntity<Room> update(@Valid @RequestBody Room room) {
+  public ResponseEntity<Room> update(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        content = @Content(
+          mediaType = "application/json",
+          examples = @ExampleObject(
+            name = "AtualizarSala",
+            value = "{\n" +
+              "  \"id\": \"fb8604b2-a4dd-49ba-a9a5-7e5e51a4cec7\",\n" +
+              "  \"name\": \"Sala Ocean\",\n" +
+              "  \"kind\": \"MEETING\",\n" +
+              "  \"description\": \"Sala com projetor e quadro branco\"\n" +
+              "}"
+          )
+        )
+      )
+      @Valid @RequestBody Room room) {
     return ResponseEntity.ok(roomService.updateRoom(room));
   }
 
@@ -122,10 +152,10 @@ public class RoomController {
   })
   public ResponseEntity<List<RoomAvailability>> getAvailableRooms(
       @Parameter(
-        description = "Data no formato dd/MM/yyyy (timezone UTC-3)",
+        description = "Data no formato dd/MM/aaaa",
         example = "31/05/2026"
       )
-      @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate date,
+      @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/aaaa") LocalDate date,
       @Parameter(description = "ID da sala (opcional)")
       @RequestParam(value = "roomId", required = false) UUID roomId) {
     if (roomId == null) {

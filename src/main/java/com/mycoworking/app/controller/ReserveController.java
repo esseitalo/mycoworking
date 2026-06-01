@@ -18,6 +18,7 @@ import com.mycoworking.app.service.ReserveService;
 import com.mycoworking.app.helpers.ErrorResponse;
 
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -78,7 +79,23 @@ public class ReserveController {
         content = @Content(schema = @Schema(implementation = ErrorResponse.class))
       )
   })
-  public ResponseEntity<Reserve> create(@Valid @RequestBody Reserve reserve) {
+    public ResponseEntity<Reserve> create(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        content = @Content(
+          mediaType = "application/json",
+          examples = @ExampleObject(
+            name = "CriarReserva",
+            value = "{\n" +
+              "  \"room\": {\n" +
+              "    \"id\": \"fb8604b2-a4dd-49ba-a9a5-7e5e51a4cec7\"\n" +
+              "  },\n" +
+              "  \"startTime\": \"2026-06-10T10:00:00-03:00\",\n" +
+              "  \"endTime\": \"2026-06-10T11:00:00-03:00\"\n" +
+              "}"
+          )
+        )
+      )
+      @Valid @RequestBody Reserve reserve) {
     return ResponseEntity.status(201)
         .body(reserveService.createReserve(reserve, reserve.getRoom().getId()));
   }
@@ -98,7 +115,23 @@ public class ReserveController {
         content = @Content(schema = @Schema(implementation = ErrorResponse.class))
       )
   })
-  public ResponseEntity<Reserve> update(@Valid @RequestBody Reserve reserve) {
+  public ResponseEntity<Reserve> update(
+      @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        content = @Content(
+          mediaType = "application/json",
+          examples = @ExampleObject(
+            name = "AtualizarReserva",
+            value = "{\n" +
+              "  \"room\": {\n" +
+              "    \"id\": \"fb8604b2-a4dd-49ba-a9a5-7e5e51a4cec7\"\n" +
+              "  },\n" +
+              "  \"startTime\": \"2026-06-10T10:00:00-03:00\",\n" +
+              "  \"endTime\": \"2026-06-10T11:00:00-03:00\"\n" +
+              "}"
+          )
+        )
+      )
+      @Valid @RequestBody Reserve reserve) {
     return ResponseEntity.ok(reserveService.updateReserve(reserve));
   }
 
