@@ -4,6 +4,9 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mycoworking.app.helpers.ReserveStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,6 +55,14 @@ public class Reserve {
   @Enumerated
   @Column(name = "status", nullable = true)
   private ReserveStatus status;
+
+  @Column(updatable = false)
+  @CreatedDate
+  protected OffsetDateTime createdDate;
+
+  @Column(updatable = false)
+  @LastModifiedDate
+  protected OffsetDateTime lastModifiedDate;
 
   public UUID getId() {
     return id;

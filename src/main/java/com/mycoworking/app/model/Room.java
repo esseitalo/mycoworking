@@ -1,8 +1,11 @@
 package com.mycoworking.app.model;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +36,14 @@ public class Room {
   @Length(max = 255)
   @Column(name = "description", length = 255)
   private String description;
+
+  @Column(updatable = false)
+  @CreatedDate
+  protected OffsetDateTime createdDate;
+
+  @Column(updatable = false)
+  @LastModifiedDate
+  protected OffsetDateTime lastModifiedDate;
 
   public UUID getId() {
     return id;
